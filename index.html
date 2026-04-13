@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MeetMind – AI Meeting Intelligence Platform</title>
+  <meta name="description" content="MeetMind automates your meeting workflow. Upload or record audio, get instant transcriptions, AI summaries, action items, and key decisions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== SIDEBAR: HISTORY ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">MeetMind</span>
+      </div>
+      <button class="icon-btn" id="sidebar-toggle" title="Close sidebar">✕</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" id="history-search" placeholder="Search meetings…" />
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">
+        <div class="empty-icon">📋</div>
+        <p>No meetings yet.<br/>Start a recording or upload a file.</p>
+      </div>
+    </div>
+    <button class="btn-ghost" id="clear-history-btn">Clear History</button>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-wrapper" id="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="open-sidebar-btn" title="Open history">
+        <span class="menu-icon">☰</span>
+      </button>
+      <div class="topbar-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">MeetMind</span>
+      </div>
+      <nav class="topbar-nav">
+        <a href="#input-section" class="nav-link">Record</a>
+        <a href="#input-section" class="nav-link">Upload</a>
+        <button class="nav-link" id="restart-app-btn" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:0.875rem;padding-left:14px;border-left:1px solid var(--border);margin-left:4px;" title="Completely reset the application">↺ Restart</button>
+      </nav>
+      <div class="topbar-actions">
+        <div class="status-dot" id="status-dot"></div>
+        <span class="status-label" id="status-label">Ready</span>
+        <button class="icon-btn theme-toggle" id="theme-toggle-btn" title="Toggle theme">🌙</button>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="hero-glow glow-1"></div>
+      <div class="hero-glow glow-2"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-pulse"></span>
+          AI-Powered · Real-Time Intelligence
+        </div>
+        <h1 class="hero-title">Turn Every Meeting<br/><span class="gradient-text">Into Actionable Insights</span></h1>
+        <p class="hero-subtitle">Record or upload your meetings. MeetMind transcribes, summarizes, extracts action items, and surfaces key decisions — automatically.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">~30s</span>
+            <span class="stat-label">Processing time</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-value">98%</span>
+            <span class="stat-label">Transcription accuracy</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-value">4</span>
+            <span class="stat-label">AI insight layers</span>
+          </div>
+        </div>
+        <a href="#input-section" class="btn-primary hero-cta">
+          <span>Start Now</span>
+          <span class="btn-arrow">↓</span>
+        </a>
+      </div>
+      <div class="hero-visual">
+        <div class="waveform-preview">
+          <div class="wave-bars-static" id="hero-wave"></div>
+        </div>
+        <div class="insight-cards">
+          <div class="insight-float card-1">
+            <span class="insight-icon">✅</span>
+            <span>3 Action Items Extracted</span>
+          </div>
+          <div class="insight-float card-2">
+            <span class="insight-icon">🎯</span>
+            <span>2 Key Decisions Found</span>
+          </div>
+          <div class="insight-float card-3">
+            <span class="insight-icon">📋</span>
+            <span>Summary Generated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INPUT SECTION -->
+    <section class="input-section" id="input-section">
+      <div class="section-header">
+        <h2>Analyze a Meeting</h2>
+        <p>Choose how you'd like to input your meeting content</p>
+      </div>
+
+      <div class="input-tabs">
+        <button class="tab-btn active" id="tab-upload" data-tab="upload">
+          <span>📁</span> Upload File
+        </button>
+        <button class="tab-btn" id="tab-record" data-tab="record">
+          <span>🎙️</span> Live Record
+        </button>
+        <button class="tab-btn" id="tab-paste" data-tab="paste">
+          <span>📝</span> Paste Text
+        </button>
+      </div>
+
+      <!-- TAB: UPLOAD -->
+      <div class="tab-panel active" id="panel-upload">
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-zone-inner">
+            <div class="drop-icon">📂</div>
+            <h3>Drop your audio or video file here</h3>
+            <p>Supports MP3, MP4, WAV, WEBM, OGG, M4A</p>
+            <label class="btn-secondary" for="file-input">Browse Files</label>
+            <input type="file" id="file-input" accept="audio/*,video/*" hidden />
+          </div>
+          <div class="drop-overlay">
+            <div class="drop-ready-icon">🎯</div>
+            <p>Release to upload</p>
+          </div>
+        </div>
+        <div class="file-preview hidden" id="file-preview">
+          <div class="file-info">
+            <div class="file-thumb">🎵</div>
+            <div class="file-meta">
+              <span class="file-name" id="preview-name">—</span>
+              <span class="file-size" id="preview-size">—</span>
+            </div>
+            <button class="icon-btn" id="remove-file-btn" title="Remove">✕</button>
+          </div>
+          <div class="audio-player-wrap hidden" id="audio-player-wrap">
+            <audio controls id="audio-player"></audio>
+          </div>
+        </div>
+        <div class="process-controls hidden" id="upload-controls">
+          <div class="meeting-title-wrap">
+            <input type="text" id="upload-title" class="meeting-title-input" placeholder="Meeting title (optional)…" maxlength="80" />
+          </div>
+          <button class="btn-primary pulse-btn" id="process-upload-btn">
+            <span class="btn-icon">🧠</span>
+            <span>Process with AI</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: RECORD -->
+      <div class="tab-panel" id="panel-record">
+        <div class="recorder-card">
+          <div class="recorder-status" id="rec-status-label">Ready to record</div>
+          <div class="waveform-container">
+            <canvas id="waveform-canvas" width="600" height="120"></canvas>
+          </div>
+          <div class="recorder-time" id="rec-timer">00:00</div>
+          <div class="recorder-controls">
+            <button class="btn-record" id="record-btn">
+              <span class="rec-icon" id="rec-icon">🎙️</span>
+              <span id="rec-btn-label">Start Recording</span>
+            </button>
+          </div>
+          <div class="transcript-live hidden" id="live-transcript">
+            <div class="live-label"><span class="pulse-dot"></span> Live Transcript</div>
+            <div class="live-text" id="live-text">Listening…</div>
+          </div>
+        </div>
+        <div class="process-controls hidden" id="record-controls">
+          <div class="meeting-title-wrap">
+            <input type="text" id="record-title" class="meeting-title-input" placeholder="Meeting title (optional)…" maxlength="80" />
+          </div>
+          <button class="btn-primary pulse-btn" id="process-record-btn">
+            <span class="btn-icon">🧠</span>
+            <span>Process Recording</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: PASTE -->
+      <div class="tab-panel" id="panel-paste">
+        <div class="paste-area">
+          <label class="paste-label" for="paste-input">Paste your meeting transcript or notes</label>
+          <textarea id="paste-input" class="paste-textarea" placeholder="Paste your meeting transcript here…
+
+Example:
+John: Good morning everyone. Let's start with the Q4 review.
+Sarah: Sure. Revenue was up 12% this quarter.
+John: Great. We need to action on the marketing plan.
+Sarah: I'll prepare the marketing proposal by Friday.
+John: Perfect. Our decision is to expand to the European market next year."></textarea>
+          <div class="paste-meta">
+            <span id="paste-word-count">0 words</span>
+          </div>
+        </div>
+        <div class="process-controls">
+          <div class="meeting-title-wrap">
+            <input type="text" id="paste-title" class="meeting-title-input" placeholder="Meeting title (optional)…" maxlength="80" />
+          </div>
+          <button class="btn-primary pulse-btn" id="process-paste-btn">
+            <span class="btn-icon">🧠</span>
+            <span>Process with AI</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PIPELINE SECTION -->
+    <section class="pipeline-section hidden" id="pipeline-section">
+      <div class="pipeline-card">
+        <h2 class="pipeline-title">AI Processing Pipeline</h2>
+        <div class="pipeline-steps">
+          <div class="pipeline-step" id="step-transcribe">
+            <div class="step-icon-wrap">
+              <span class="step-icon">📝</span>
+              <div class="step-spinner"></div>
+            </div>
+            <div class="step-info">
+              <span class="step-name">Transcribing</span>
+              <span class="step-desc">Converting speech to text…</span>
+            </div>
+            <span class="step-status">Pending</span>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" id="step-analyze">
+            <div class="step-icon-wrap">
+              <span class="step-icon">🔬</span>
+              <div class="step-spinner"></div>
+            </div>
+            <div class="step-info">
+              <span class="step-name">Analyzing</span>
+              <span class="step-desc">Parsing structure and topics…</span>
+            </div>
+            <span class="step-status">Pending</span>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" id="step-generate">
+            <div class="step-icon-wrap">
+              <span class="step-icon">✨</span>
+              <div class="step-spinner"></div>
+            </div>
+            <div class="step-info">
+              <span class="step-name">Generating Insights</span>
+              <span class="step-desc">Summaries, actions, decisions…</span>
+            </div>
+            <span class="step-status">Pending</span>
+          </div>
+        </div>
+        <div class="pipeline-progress">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="pipeline-log" id="pipeline-log">
+          <span class="log-line">Initializing MeetMind AI engine…</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS SECTION -->
+    <section class="results-section hidden" id="results-section">
+      <div class="results-header">
+        <div>
+          <h2>Meeting Analysis Complete</h2>
+          <p class="results-meta">
+            <span id="res-duration">—</span> &nbsp;·&nbsp;
+            <span id="res-words">—</span> &nbsp;·&nbsp;
+            <span id="res-date">—</span>
+          </p>
+        </div>
+        <div class="results-actions">
+          <button class="btn-ghost" id="new-meeting-btn">+ New Meeting</button>
+          <button class="btn-secondary" id="export-pdf-btn">⬇ Export PDF</button>
+          <button class="btn-secondary" id="export-doc-btn">⬇ Export DOC</button>
+          <button class="btn-primary" id="copy-all-btn">📋 Copy All</button>
+        </div>
+      </div>
+
+      <!-- Result Tabs -->
+      <div class="result-tabs">
+        <button class="result-tab active" data-rtab="transcript">
+          <span>📜</span> Transcript
+          <span class="tab-badge" id="badge-transcript">—</span>
+        </button>
+        <button class="result-tab" data-rtab="summary">
+          <span>📋</span> Summary
+        </button>
+        <button class="result-tab" data-rtab="actions">
+          <span>✅</span> Actions
+          <span class="tab-badge" id="badge-actions">0</span>
+        </button>
+        <button class="result-tab" data-rtab="decisions">
+          <span>🔑</span> Decisions
+          <span class="tab-badge" id="badge-decisions">0</span>
+        </button>
+        <button class="result-tab" data-rtab="participants">
+          <span>👥</span> Participants
+          <span class="tab-badge" id="badge-participants">0</span>
+        </button>
+        <button class="result-tab qa-tab" data-rtab="qa">
+          <span>💬</span> Ask AI
+        </button>
+      </div>
+
+      <!-- Result Panels -->
+      <div class="result-panels">
+
+        <!-- TRANSCRIPT -->
+        <div class="result-panel active" id="rp-transcript">
+          <div class="panel-toolbar">
+            <span class="panel-info" id="transcript-info">—</span>
+            <div class="transcript-toolbar-right">
+              <div class="search-wrap">
+                <input type="text" id="transcript-search" class="transcript-search-input" placeholder="Search transcript…" />
+                <span class="search-result-count" id="search-count"></span>
+              </div>
+              <button class="btn-tiny" id="copy-transcript-btn">Copy</button>
+            </div>
+          </div>
+          <div class="transcript-content" id="transcript-content">
+            <p class="placeholder">Transcript will appear here.</p>
+          </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="result-panel" id="rp-summary">
+          <div class="panel-toolbar">
+            <span class="panel-info">AI-Generated Executive Summary</span>
+            <button class="btn-tiny" id="copy-summary-btn">Copy</button>
+          </div>
+          <div class="summary-content" id="summary-content">
+            <p class="placeholder">Summary will appear here.</p>
+          </div>
+        </div>
+
+        <!-- ACTION ITEMS -->
+        <div class="result-panel" id="rp-actions">
+          <div class="panel-toolbar">
+            <span class="panel-info">Extracted Action Items</span>
+            <button class="btn-tiny" id="copy-actions-btn">Copy</button>
+          </div>
+          <div class="actions-list" id="actions-list">
+            <p class="placeholder">Action items will appear here.</p>
+          </div>
+        </div>
+
+        <!-- KEY DECISIONS -->
+        <div class="result-panel" id="rp-decisions">
+          <div class="panel-toolbar">
+            <span class="panel-info">Key Decisions Identified</span>
+            <button class="btn-tiny" id="copy-decisions-btn">Copy</button>
+          </div>
+          <div class="decisions-list" id="decisions-list">
+            <p class="placeholder">Key decisions will appear here.</p>
+          </div>
+        </div>
+
+        <!-- PARTICIPANTS -->
+        <div class="result-panel" id="rp-participants">
+          <div class="panel-toolbar">
+            <span class="panel-info">Speaker Analysis &amp; Participation Metrics</span>
+            <button class="btn-tiny" id="copy-participants-btn">Copy</button>
+          </div>
+          <div class="participants-list" id="participants-list">
+            <p class="placeholder">Participant data will appear here.</p>
+          </div>
+        </div>
+
+        <!-- Q&A PANEL -->
+        <div class="result-panel" id="rp-qa">
+          <div class="qa-panel-inner">
+            <!-- Suggested Questions -->
+            <div class="qa-suggestions" id="qa-suggestions">
+              <div class="qa-suggestions-label">✨ Suggested questions</div>
+              <div class="qa-chips" id="qa-chips"></div>
+            </div>
+            <!-- Chat messages -->
+            <div class="qa-messages" id="qa-messages">
+              <div class="qa-welcome">
+                <div class="qa-welcome-icon">🤖</div>
+                <div class="qa-welcome-text">
+                  <strong>Ask anything about this meeting</strong>
+                  <p>I can answer questions about decisions, action items, who said what, deadlines, topics discussed, and more.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Input -->
+            <div class="qa-input-bar">
+              <input
+                type="text"
+                id="qa-input"
+                class="qa-input"
+                placeholder="e.g. Who is responsible for the marketing plan?"
+                maxlength="250"
+                autocomplete="off"
+              />
+              <button class="qa-send-btn" id="qa-send-btn" title="Ask">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>MeetMind &copy; 2026 &nbsp;·&nbsp; AI Meeting Intelligence &nbsp;·&nbsp; Built with Web Speech API</p>
+    </footer>
+
+  </div><!-- /main-wrapper -->
+
+  <!-- TOAST -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- HTML2PDF Library for PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
